@@ -1,0 +1,41 @@
+import threading
+from time import sleep
+
+g_num = 0
+
+
+def test1(num):
+    global g_num
+
+    for i in range(num):
+        mutex.acquire()
+        g_num += 1
+        mutex.release()
+    print("---test1---%d" % g_num)
+ 
+
+def test2(num):
+    global g_num
+    for i in range(num):
+        mutex.acquire()
+        g_num += 1
+        mutex.release()
+    print("---test2---%d" % g_num)
+
+
+mutex = threading.Lock()
+
+
+def main():
+    t1 = threading.Thread(target=test1, args=(2000000,))
+    t2 = threading.Thread(target=test2, args=(2000000,))
+
+    t1.start()
+    t2.start()
+
+    sleep(3)
+    print("---main---%d" % g_num)
+
+
+if __name__ == '__main__':
+    main()
