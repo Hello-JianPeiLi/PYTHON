@@ -7,15 +7,17 @@ import re
 from dynamic import mini_frame
 import sys
 
+"""添加配置文件"""
 
 
 class WSGIServer:
-    def __init__(self, port, app):
+    def __init__(self, port, app, static_path):
         self.tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.tcp_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.tcp_socket.bind(("", port))
         self.tcp_socket.listen(128)
         self.application = app
+        self.static = static_path
 
     def handle_new_socket(self, new_socket):
         request = new_socket.recv(1024)
@@ -28,7 +30,7 @@ class WSGIServer:
                 file_name = '/index.html'
         if not file_name.endswith('.py'):
             try:
-                f = open('./static' + file_name, 'rb')
+                f = open(self.static + file_name, 'rb')
                 html_content = f.read()
                 f.close()
             except:
@@ -96,10 +98,14 @@ def main():
         print('正则不存在')
         return
 
+    with open('./web_server.conf', 'rb') as f:
+        conf_info = eval(f.read())
+
     sys.path.append('./dynamic')
     frame = __import__(frame_name)
+
     app = getattr(frame, app_name)
-    se = WSGIServer(port, app)
+    se = WSGIServer(port, app, conf_info['static_path'])
     se.run_server()
 
 
