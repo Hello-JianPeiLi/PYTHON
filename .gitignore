@@ -3,3 +3,4 @@ Python高级-全部（html版）
 .idea
 test*
 html
+*__pycache__*
