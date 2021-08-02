@@ -7,7 +7,10 @@ import re
 from dynamic import mini_frame
 import sys
 
-"""添加路由"""
+"""
+    1.5 添加路由
+    1.6 添加加关功能
+"""
 
 
 class WSGIServer:
@@ -28,7 +31,7 @@ class WSGIServer:
             print("-->>" * 10, file_name)
             if file_name == '/':
                 file_name = '/index.html'
-        if not file_name.endswith('.py'):
+        if not file_name.endswith('.html'):
             try:
                 f = open(self.static + file_name, 'rb')
                 html_content = f.read()
@@ -58,9 +61,9 @@ class WSGIServer:
             for temp in self.header:
                 response_header += '%s:%s\r\n' % (temp[0], temp[1])
 
-            response_header += 'Content-Length:%d\r\n' % len(response_body)
+            # response_header += 'Content-Length:%d\r\n' % len(response_body)
             response_header += '\r\n'
-            response = response_header.encode('utf-8') + response_body
+            response = response_header.encode('utf-8') + response_body.encode('utf-8')
             new_socket.send(response)
 
     def set_status_header(self, status, header):

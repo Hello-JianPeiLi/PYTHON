@@ -40,7 +40,7 @@ def center():
 
 
 def application(env, start_response):
-    file_name = env['path_info']
+    file_name = env['PATH_INFO']
     start_response('200 OK', [('Content-Type', 'text/html')])
     # if file_name == '/index.py':
     #     return index()
