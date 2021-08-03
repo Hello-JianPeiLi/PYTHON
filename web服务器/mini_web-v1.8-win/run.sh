@@ -1,0 +1,1 @@
+python3 mini_server.py 7788 mini_frame:application
